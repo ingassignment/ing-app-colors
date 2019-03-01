@@ -1,0 +1,21 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="ajax-help">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>    
+  </template>
+
+  <script>
+    class AjaxHelp extends Polymer.Element {
+      static get is() { return 'ajax-help'; }
+    }
+
+    window.customElements.define(AjaxHelp.is, AjaxHelp);
+  </script>
+</dom-module>

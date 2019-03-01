@@ -1,0 +1,93 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<!--
+  child element, it displays the selected color info and It has one button to change the parent element color
+-->
+
+<dom-module id="ing-app-colors-child">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;        
+      }
+
+      paper-button {
+        background-color:blue;
+      }
+
+      #child {
+        background-color: white;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin:20px 50px 0px 50px;      
+
+      }
+
+      #element {
+        width:52%;
+      }
+
+      .details {
+        margin-top: 10px;
+        margin-left:50px;
+        margin-bottom:10px;
+        padding:10px;
+        border:1px solid black;
+        width:40%;   
+        background-color:blue;    
+
+      }
+      #actionButton{
+        margin-top:5%;
+      }
+     
+    </style>
+    <div id="child">
+      <div id="element">
+        <div id="displayName" class="details">Name : {{selectedColor.name}}</div>
+        <div id="description" class="details">Description : {{selectedColor.description}}</div>
+      </div>
+      <div id="actionButton">
+        <paper-button raised on-tap="_changeColor">CHANGE COLOR</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class IngAppColorsChild extends Polymer.Element {
+      static get is() { return 'ing-app-colors-child'; }
+      static get properties() {
+        return {
+          selectedColor: {
+            type: Object
+          },
+          parentColor: {
+            type: String,
+            notify: true
+          },
+          childColor: {
+            type: String,
+            observer: '_changeChildColor'
+          }
+        }
+
+      }
+      
+      // parent elment background color
+      _changeColor() {
+        this.parentColor = 'white';
+        this.parentColor = this.selectedColor.name;
+
+      }
+
+      // child element back ground color
+      _changeChildColor(childColor) {
+        this.$.child.style.backgroundColor = childColor;
+      }
+
+    }
+
+    window.customElements.define(IngAppColorsChild.is, IngAppColorsChild);
+  </script>
+</dom-module>

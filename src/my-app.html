@@ -1,0 +1,21 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="pages/ing-app-colors-parent.html">
+<lik rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+  <link rel="import" href="./ajax-help.html">
+  <dom-module id="my-app">
+    <template>
+      <style>
+        :host {
+          display: block;
+        }
+      </style>
+      <!-- entry point for the application pages-->
+      <ing-app-colors-parent></ing-app-colors-parent>
+    </template>
+    <script>
+      class MyApp extends Polymer.Element {
+        static get is() { return 'my-app'; }
+      }
+      window.customElements.define(MyApp.is, MyApp);
+    </script>
+  </dom-module>

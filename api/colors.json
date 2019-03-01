@@ -1,0 +1,18 @@
+{
+    "orange": {
+        "name": "Orange",
+        "description": "My Name is Orange"
+    },
+    "red": {
+        "name": "Red",
+        "description": "My Name is Red"
+    },
+    "purple": {
+        "name": "Purple",
+        "description": "My Name is Purple"
+    },
+    "blue": {
+        "name": "Blue",
+        "description": "My Name is Blue"
+    }
+}

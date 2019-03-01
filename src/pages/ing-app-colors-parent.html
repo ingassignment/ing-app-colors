@@ -1,0 +1,165 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<lik rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+  <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+  <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+  <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+  <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+  <link rel="import" href="../../bower_components/paper-styles/color.html">
+  <link rel="import" href="./ing-app-colors-child.html">
+
+  <!--
+    Parent element to choose colors, creating child elements and deleting the same 
+  -->
+  <dom-module id="ing-app-colors-parent">
+    <template>
+      <!-- iron-ajax for http calls-->
+      <iron-ajax id="myAjax" url="http://localhost:4000/" handle-as="json" on-response="handleResponse"
+        debounce-duration="300"></iron-ajax>
+      <style>
+        :host {
+          display: block;          
+        }
+
+        paper-button {
+          background-color: blue;
+        }
+
+        #parent {
+          display: flex;
+          background-color: white;         
+          margin:50px 50px 0px 50px;
+          width: auto;
+          height: 250px;
+          flex-direction: row;
+
+        }
+
+        #dropdown {
+          padding-left: 50px;
+          flex: 1;
+        }
+
+        #buttons {
+          margin-top: 150px;
+          margin-bottom: 20px;
+          flex: 1;
+        }
+
+        .redColor {
+          background-color: red;
+        }
+      </style>     
+
+      <div id="parent">
+        <!-- colors drop down-->
+        <div id="dropdown">
+          <paper-dropdown-menu label="choose color" selected-item="{{selectedItem}}">
+            <paper-listbox slot="dropdown-content" selected="{{indexNumber}}">
+              <template is="dom-repeat" items="[[items]]" as="colorName">
+                <paper-item>[[colorName]]</paper-item>                
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </div>
+        <!-- Add and Delete buttons-->
+        <div id="buttons" class="buttons">
+          <paper-button raised  on-tap="_deletedChild" >DELETE</paper-button>
+          <paper-button raised  on-tap="_createChild" >ADD</paper-button>
+        </div>
+      </div>
+      <!-- generating child elements-->
+      <template is="dom-if" if="{{isChildShow}}">
+        <template is="dom-repeat" items="{{colorItems}}" as="selectedColor" indexAs="index">          
+          <ing-app-colors-child selected-color="[[selectedColor]]" parent-color="{{parentColor}}"
+            child-color="[[selectedColor.name]]"></ing-app-colors-child>
+        </template>
+      </template>
+    </template>
+    <script>
+      class IngAppColorsParent extends Polymer.Element {
+        static get is() { return 'ing-app-colors-parent'; }
+        static get observers() {
+          return ['_changeBgColor(parentColor)'];
+        }
+
+        static get properties() {
+          return {
+
+            selectedColor: {
+              type: Object
+            },
+            isChildShow: {
+              type: Boolean
+            },
+            colorItems: {
+              type: Array,
+              value: null
+            },          
+
+            items: {
+              type: Array,
+              value: ['Orange', 'Purple', 'Blue', 'Red']
+            }
+
+          };
+        }
+
+        // calling API to get color Data
+        _createChild() {         
+          if (this.selectedItem !== undefined) {
+            let selectedItem = this.selectedItem;
+            var url = "http://localhost:4000/";
+            let param = selectedItem.innerText.toLowerCase();
+            this.$.myAjax.url = url.concat(param);
+            this.$.myAjax.generateRequest();
+          }
+        }
+
+        // Logic to remove the child element
+        _deletedChild() {
+          if (this.selectedItem !== undefined) {            
+            var colorforDelete = this.selectedItem.innerText;
+            var availableColors = this.colorItems;
+            if (availableColors != null) {
+              let index = availableColors.findIndex(item => item.name == colorforDelete);
+              if (index >= 0) {
+                availableColors.splice(index, 1);
+                this.colorItems = null;
+                this.colorItems = availableColors;
+                this.$.parent.style.backgroundColor = 'white';
+              }
+            } else {
+              this.isChildShow = false;
+            }
+          }
+
+        }
+
+        // changing parent element back ground color
+        _changeBgColor(parentColor) { 
+          if( parentColor !== 'white'){
+          let colors = this.items;          
+          let index = colors.findIndex(item=> item == parentColor);          
+          this.indexNumber = index;        
+          this.$.parent.style.backgroundColor = parentColor; 
+          }         
+        }
+        // method for handling http response sucess case
+        handleResponse(event) {
+          var response = event.detail.xhr.response;
+          this.selectedColor = response;          
+          var temp = this.colorItems || [];
+          if (temp.findIndex(item => item.name == response.name) == -1) {
+            temp.push(this.selectedColor);
+            this.isChildShow = true;
+            this.colorItems = null;
+            // populate data for child element
+            this.colorItems = temp;           
+          }
+        } 
+
+       
+      }
+      window.customElements.define(IngAppColorsParent.is, IngAppColorsParent);
+    </script>
+  </dom-module>

@@ -1,0 +1,24 @@
+{
+  "name": "ing-app-colors",
+  "authors": [
+    "The Polymer Authors"
+  ],
+  "license": "",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#2.1.0",
+    "paper-item": "PolymerElements/paper-item#2.0.0",
+    "paper-listbox": "PolymerElements/paper-listbox#2.1.1",
+    "iron-ajax": "PolymerElements/iron-ajax#2.1.3",
+    "paper-button": "PolymerElements/paper-button#2.0.0",
+    "web-animations-js": "web-animations/web-animations-js#2.2.2"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
+  },
+  "private": true
+}
